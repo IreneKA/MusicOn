@@ -1,0 +1,27 @@
+﻿@model IEnumerable<MusicOn.Models.MixTape>
+
+@if (User.IsInRole("admin"))
+{
+    <p>
+        <a asp-controller="MixTapes" asp-action="Create">Создать</a>
+    </p>
+}
+<table class="table">
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="MixTapes" asp-action="Details" asp-route-id="@item.MixTapeId">@Html.DisplayFor(modelItem => item.Title)</a>
+                </td>
+                @if (User.IsInRole("admin"))
+                {
+                    <td>
+                        <a asp-controller="MixTapes" asp-action="Edit" asp-route-id="@item.MixTapeId">Изменить</a>
+                        <a asp-controller="MixTapes" asp-action="Delete" asp-route-id="@item.MixTapeId">Удалить</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

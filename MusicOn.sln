@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicOn", "MusicOn\MusicOn.csproj", "{1443DC48-0AE4-4AB3-8279-1674E821A161}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1443DC48-0AE4-4AB3-8279-1674E821A161}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1443DC48-0AE4-4AB3-8279-1674E821A161}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1443DC48-0AE4-4AB3-8279-1674E821A161}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1443DC48-0AE4-4AB3-8279-1674E821A161}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3884440E-8EAE-413F-B810-AC52EFF935B9}
+	EndGlobalSection
+EndGlobal
