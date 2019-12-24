@@ -1,0 +1,47 @@
+﻿@model MusicOn.ViewModels.SearchModel
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h1>Результаты поиска</h1>
+
+<div data-toggle="collapse" data-target="#compositions" aria-expanded="true" aria-controls="compositions">
+    <h2>Треки</h2>
+</div>
+
+<div class="collapse.in" id="compositions">
+    @{
+        await Html.RenderPartialAsync("../Compositions/Index", Model.Compositions);
+    }
+</div>
+
+<div data-toggle="collapse" data-target="#albums">
+    <h2>Альбомы</h2>
+</div>
+
+<div class="collapse.in" id="albums">
+    @{
+        await Html.RenderPartialAsync("../Albums/Index", Model.Albums);
+    }
+</div>
+
+<div data-toggle="collapse" data-target="#mixtapes">
+    <h2>Сборники</h2>
+</div>
+
+<div class="collapse.in" id="mixtapes">
+    @{
+        await Html.RenderPartialAsync("../MixTapes/Index", Model.MixTapes);
+    }
+</div>
+
+<div data-toggle="collapse" data-target="#artists">
+    <h2>Исполнители</h2>
+</div>
+
+<div class="collapse.in" id="artists">
+    @{
+        await Html.RenderPartialAsync("../Artists/Index", Model.Artists);
+    }
+</div>

@@ -1,0 +1,62 @@
+﻿@model MusicOn.ViewModels.UserViewModel
+
+@{
+    ViewData["Title"] = Model.User.Username;
+}
+@if (User.IsInRole("admin") && Model.User.RoleId != 1)
+{
+    <p>
+        <b>@Html.DisplayNameFor(model => model.User.Role)</b>
+        @Html.DisplayFor(model => model.User.Role.Title)
+        <a asp-controller="Users" asp-action="EditRole" asp-route-id="@Model.User.UserId">Изменить роль</a>
+        <a asp-controller="Users" asp-action="Delete" asp-route-id="@Model.User.UserId">Удалить</a>
+    </p>
+}
+@if (Model.User.UserId.ToString() == User.FindFirst(x => x.Type == "id").Value)
+{
+    <p>
+        <a asp-controller="Users" asp-action="Edit" asp-route-id="@Model.User.UserId">Изменить</a>
+        <a asp-controller="Users" asp-action="Delete" asp-route-id="@Model.User.UserId">Удалить</a>
+    </p>
+}
+
+<div>
+    <h4>@Model.User.Username</h4>
+    <hr />
+    <h2>Треки</h2>
+    @if (Model.FavouriteCompositions.Count == 0)
+    {
+        <content>Нет избранных треков</content>
+    }
+    else
+    {
+        await Html.RenderPartialAsync("../Compositions/Index", Model.FavouriteCompositions);
+    }
+
+    <h2>Исполнители</h2>
+    @if (Model.FavouriteArtists.Count == 0)
+    {
+        <content>Нет избранных исполнителей</content>
+    }
+    else
+    {
+        await Html.RenderPartialAsync("../Artists/Index", Model.FavouriteArtists);
+    }
+    @if (Model.User.UserId.ToString() == User.FindFirst(x => x.Type == "id").Value)
+    {
+        <h2>Загрузки</h2>
+        if (Model.LoadedSongs.Count == 0)
+        {
+            <content>История загрузок пуста</content>
+        }
+        else
+        {
+            <form asp-controller="LoadedSongs" asp-action="DeleteAll">
+                <div class="input-group">
+                    <input type="submit" class="btn btn-danger" value="Очистить историю загрузок" />
+                </div>
+            </form>
+            await Html.RenderPartialAsync("../LoadedSongs/Index", Model.LoadedSongs);
+        }
+    }
+</div>

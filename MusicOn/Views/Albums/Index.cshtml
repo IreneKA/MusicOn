@@ -1,0 +1,59 @@
+﻿@model IEnumerable<MusicOn.Models.Album>
+
+@if (User.IsInRole("admin"))
+{
+    <p>
+        <a asp-controller="Albums" asp-action="Create">Создать</a>
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AlbumsArtists)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <td>
+                @Html.DisplayNameFor(model => model.Single)
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Albums" asp-action="Details" asp-route-id="@item.AlbumId">@Html.DisplayFor(modelItem => item.Title)</a>
+                </td>
+                <td>
+                    @if (item.AlbumsArtists.Count > 0)
+                    {
+                        <a asp-controller="Artists" asp-action="Details" asp-route-id="@item.AlbumsArtists.ToList()[0].Artist.ArtistId">@Html.DisplayFor(modelItem => item.AlbumsArtists.ToList()[0].Artist.Name)</a>
+                        @for (int i = 1; i < item.AlbumsArtists.Count; i++)
+                        {<content>,</content>
+                            <a asp-controller="Artists" asp-action="Details" asp-route-id="@item.AlbumsArtists.ToList()[i].Artist.ArtistId">@Html.DisplayFor(modelItem => item.AlbumsArtists.ToList()[i].Artist.Name)</a>
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Single)
+                </td>
+                @if (User.IsInRole("admin"))
+                {
+                    <td>
+                        <a asp-controller="Albums" asp-action="Edit" asp-route-id="@item.AlbumId">Изменить</a>
+                        <a asp-controller="Albums" asp-action="Delete" asp-route-id="@item.AlbumId">Удалить</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

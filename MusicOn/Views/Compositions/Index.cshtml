@@ -1,0 +1,92 @@
+﻿
+
+@model IEnumerable<MusicOn.ViewModels.CompositionViewModel>
+
+@if (User.IsInRole("admin"))
+{
+    <p>
+        <a asp-controller="Compositions" asp-action="Create">Создать</a>
+    </p>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Composition.Song)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Composition.Album.AlbumsArtists)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Composition.Duration)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Compositions" asp-action="Details" asp-route-id="@item.Composition.CompositionId">@Html.DisplayFor(modelItem => item.Composition.Song.Title)</a>
+                </td>
+                <td>
+                    @if (item.Composition.Album.AlbumsArtists.Count > 0)
+                    {
+                        <a asp-controller="Artists" asp-action="Details" asp-route-id="@item.Composition.Album.AlbumsArtists.ToList()[0].Artist.ArtistId">@Html.DisplayFor(modelItem => item.Composition.Album.AlbumsArtists.ToList()[0].Artist.Name)</a>
+                        @for (int i = 1; i < item.Composition.Album.AlbumsArtists.Count; i++)
+                        {
+                            <content>, </content>
+                            <a asp-controller="Artists" asp-action="Details" asp-route-id="@item.Composition.Album.AlbumsArtists.ToList()[i].Artist.ArtistId">@Html.DisplayFor(modelItem => item.Composition.Album.AlbumsArtists.ToList()[i].Artist.Name)</a>
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Composition.Duration)
+                </td>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <td>
+
+                        @if (!item.IsFavourite)
+                        {
+                            <form asp-controller="FavouriteSongs" asp-action="Add">
+                                <div class="input-group">
+                                    <input type="hidden" asp-for="@item.Composition.CompositionId" name="CompositionId">
+                                    <input type="submit" class="btn btn-primary" value="Добавить в избранное" />
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-controller="FavouriteSongs" asp-action="Delete">
+                                <div class="input-group">
+                                    <input type="hidden" asp-for="@item.Composition.CompositionId" name="CompositionId">
+                                    <input type="submit" class="btn btn-danger" value="Удалить из избранного" />
+                                </div>
+                            </form>
+                        }
+                    </td>
+                    <td>
+                        <form asp-controller="LoadedSongs" asp-action="Add">
+                            <div class="input-group">
+                                <input type="hidden" asp-for="@item.Composition.CompositionId" name="CompositionId">
+                                <input type="submit" class="btn btn-primary" value="Загрузить" />
+                            </div>
+                        </form>
+                    </td>
+                }
+                @if (User.IsInRole("admin"))
+                {
+                    <td>
+                        <a asp-controller="Compositions" asp-action="Edit" asp-route-id="@item.Composition.CompositionId">Изменить</a>
+                        <a asp-controller="Compositions" asp-action="Delete" asp-route-id="@item.Composition.CompositionId">Удалить</a>
+                    </td>
+                }
+
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,54 @@
+﻿@model IEnumerable<MusicOn.Models.AlbumsArtists>
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>AlbumsArtists</h4>
+    <hr />
+    @if (Model.Count() > 0)
+    {
+        <a asp-controller="Artists" asp-action="Details" asp-route-id="@Model.ToList()[0].ArtistId">Back</a>
+    }
+    else
+    {
+        <a asp-controller="Search" asp-action="Index">Back</a>
+    }
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Album)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Artist)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Album.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Artist.Name)
+                    </td>
+                    <td>
+                        <form asp-action="Delete">
+                            <input type="hidden" asp-for="@item.ArtistId" name="ArtistId"/>
+                            <input type="hidden" asp-for="@item.AlbumId" name="AlbumId" />
+                            <input type="submit" value="Delete" class="btn btn-danger" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

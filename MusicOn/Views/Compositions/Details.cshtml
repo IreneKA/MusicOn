@@ -1,0 +1,81 @@
+﻿@model MusicOn.ViewModels.CompositionViewModel
+
+@{
+    ViewData["Title"] = Model.Composition.Song.Title;
+}
+
+    <div>
+        <h4>Трек</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Composition.Song)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Composition.Song.Title)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Composition.Album)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Composition.Album.Title)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Composition.Album.AlbumsArtists)
+            </dt>
+            <dd class="col-sm-10">
+                @if (Model.Composition.Album.AlbumsArtists.Count > 0)
+                {
+                    <a asp-controller="Artists" asp-action="Details" asp-route-id="@Model.Composition.Album.AlbumsArtists.ToList()[0].Artist.ArtistId">@Html.DisplayFor(modelItem => Model.Composition.Album.AlbumsArtists.ToList()[0].Artist.Name)</a>
+                    @for (int i = 1; i < Model.Composition.Album.AlbumsArtists.Count; i++)
+                    {
+                        <content>, </content>
+                        <a asp-controller="Artists" asp-action="Details" asp-route-id="@Model.Composition.Album.AlbumsArtists.ToList()[i].Artist.ArtistId">@Html.DisplayFor(modelItem => Model.Composition.Album.AlbumsArtists.ToList()[i].Artist.Name)</a>
+                    }
+                }
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Composition.Duration)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Composition.Duration)
+            </dd>
+        </dl>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="btn-group">
+                @if (!Model.IsFavourite)
+                {
+                    <form asp-controller="FavouriteSongs" asp-action="Add">
+                        <div class="input-group">
+                            <input type="hidden" asp-for="@Model.Composition.CompositionId" name="CompositionId">
+                            <input type="submit" class="btn btn-primary" value="Добавить в избранное" />
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <form asp-controller="FavouriteSongs" asp-action="Delete">
+                        <div class="input-group">
+                            <input type="hidden" asp-for="@Model.Composition.CompositionId" name="CompositionId">
+                            <input type="submit" class="btn btn-danger" value="Удалить из избранного" />
+                        </div>
+                    </form>
+                }
+                <form asp-controller="LoadedSongs" asp-action="Add">
+                    <div class="input-group">
+                        <input type="hidden" asp-for="@Model.Composition.CompositionId" name="CompositionId">
+                        <input type="submit" class="btn btn-primary" value="Загрузить" />
+                    </div>
+                </form>
+            </div>
+        }
+        @if (User.IsInRole("admin"))
+        {
+            <p>
+                <a asp-controller="Compositions" asp-action="Edit" asp-route-id="@Model.Composition.CompositionId">Изменить</a>
+                <a asp-controller="Compositions" asp-action="Delete" asp-route-id="@Model.Composition.CompositionId">Удалить</a>
+            </p>
+        }
+    </div>
+
